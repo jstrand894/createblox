@@ -8,11 +8,10 @@
 {{ $view := $block.design.view | default "card" }}
 
 {{ $items_offset := $block.content.offset | default 0 }}
-{{ $items_count := $block.content.count }}
+{{ $items_count := $block.content.custom_count | default 5 }}  {{/* Use custom_count if defined */}}
+
 {{ if eq $items_count 0 }}
   {{ $items_count = 65535 }}
-{{ else }}
-  {{ $items_count = $items_count | default 5 }}
 {{ end }}
 
 {{/* Query */}}
@@ -99,7 +98,7 @@
 
   {{ range $index, $item := $query }}
     {{ partial "functions/render_view" (dict "page" $block "item" . "view" $view "index" $index "config" $config) }}
-  {{end}}
+  {{ end }}
 
   {{ partial "functions/render_view" (dict "fragment" "end" "page" $block "item" . "view" $view) }}
 
